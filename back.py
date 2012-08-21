@@ -1,9 +1,20 @@
 import Image, ImageDraw
 import random
 import operator
+from collections import defaultdict
 import matplotlib.delaunay as triang
 
 
+def edge_colour(edg):
+    
+    #generate adjacency list
+    adj_list = defaultdict(list)
+    for e in edg:
+        adj_list[e[0]].append(e[1])
+        adj_list[e[1]].append(e[0])
+    print adj_list
+
+    
 if __name__ == "__main__":
     width = 1039*4
     height = 697*4
@@ -60,7 +71,9 @@ if __name__ == "__main__":
     cens,edg,tri,neig = triang.delaunay([x for x,y in points],
                                         [y for x,y in points])
 
-
+    #perform edge colouring
+    edge_colour(edg)
+                                        
     #draw the delunay triangulation lines
     for start,end in edg:
         x = points[start][0]
