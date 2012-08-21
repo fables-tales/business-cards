@@ -39,9 +39,9 @@ def edge_colour(edg):
     
 def generate_hipster_colour():
     '''Generates a pesudorandom physical colour with certian properties.'''
-    minimum_value = 20
-    maximum_value = 220
-    average_value = 150
+    minimum_value = 41
+    maximum_value = 240
+    average_value = 162
     nudge_step = 10
     
     #create two innital random values
