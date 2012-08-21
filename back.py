@@ -118,11 +118,6 @@ if __name__ == "__main__":
                y + offset_from_center_y)
               for x, y in points]
 
-    #draw the points
-    for x, y in points:
-        draw.ellipse((x-arc_radius, y-arc_radius, x+arc_radius, y+arc_radius),
-                     fill=(205, 240, 41))
-
     #compute the delunay triangulation
     cens,edg,tri,neig = triang.delaunay([x for x,y in points],
                                         [y for x,y in points])
@@ -142,6 +137,10 @@ if __name__ == "__main__":
         y2 = points[end][1]
         draw.line((x,y,x2,y2), fill=physical_colours[edg_colours[i]], width=4)
 
+    #draw the points
+    for x, y in points:
+        draw.ellipse((x-arc_radius, y-arc_radius, x+arc_radius, y+arc_radius),
+                     fill=(205, 240, 41))
 
     #apply antialiasing
     im.thumbnail((width/4, height/4), Image.ANTIALIAS)
