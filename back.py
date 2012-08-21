@@ -6,6 +6,7 @@ import matplotlib.delaunay as triang
 
 
 def edge_colour(edg):
+    '''Returns a valid edge colouring of the given graph in the mathematical sense. No two edges that are connected by a node share the same colour.'''
     
     #generate adjacency list
     adj_list = defaultdict(list)
@@ -35,6 +36,40 @@ def edge_colour(edg):
     #done
     return edg_colours
         
+    
+def generate_hipster_colour():
+    '''Generates a pesudorandom physical colour with certian properties.'''
+    minimum_value = 20
+    maximum_value = 220
+    average_value = 150
+    nudge_step = 10
+    
+    #create two innital random values
+    alpha = random.randint(minimum_value, maximum_value)
+    beta = random.randint(minimum_value, maximum_value)
+    
+    #try to create thrid value
+    gamma = average_value*3-alpha-beta
+    
+    #too low?
+    while gamma < minimum_value:
+        #nudge alpha and beta down
+        alpha -= nudge_step
+        beta -= nudge_step
+        #recalculate gamma
+        gamma = average_value*3-alpha-beta
+        
+    #too high?
+    while gamma > maximum_value:
+        #nudge alpha and beta down
+        alpha += nudge_step
+        beta += nudge_step
+        #recalculate gamma
+        gamma = average_value*3-alpha-beta
+    
+    #return colour
+    return (alpha, beta, gamma)
+    
     
 if __name__ == "__main__":
     width = 1039*4
@@ -94,14 +129,18 @@ if __name__ == "__main__":
 
     #perform edge colouring
     edg_colours = edge_colour(edg)
+    
+    #remember the physical colours we've used
+    physical_colours = defaultdict(generate_hipster_colour)
                                         
     #draw the delunay triangulation lines
-    for start,end in edg:
+    for i in range(0, len(edg)):
+        start,end = edg[i]
         x = points[start][0]
         y = points[start][1]
         x2 = points[end][0]
         y2 = points[end][1]
-        draw.line((x,y,x2,y2), fill=(205, 240, 41), width=4)
+        draw.line((x,y,x2,y2), fill=physical_colours[edg_colours[i]], width=4)
 
 
     #apply antialiasing
