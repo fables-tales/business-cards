@@ -9,11 +9,32 @@ def edge_colour(edg):
     
     #generate adjacency list
     adj_list = defaultdict(list)
-    for e in edg:
-        adj_list[e[0]].append(e[1])
-        adj_list[e[1]].append(e[0])
-    print adj_list
-
+    for i in range(0, len(edg)):
+        adj_list[edg[i][0]].append(i)
+        adj_list[edg[i][1]].append(i)
+   
+    #colour edges
+    edg_colours = [-1]*(len(edg)+1)
+    for i in range(0, len(edg)):
+        #hack here to work around Python's lack of a do-while loop
+        stable_colour = False
+        #loop until we find a 'stable' colour
+        while not stable_colour:
+            #assume that this pass results in a stable colour
+            stable_colour = True
+            #incirment our colour
+            edg_colours[i] += 1
+            # check against adjacent edges
+            for edge_id in adj_list[edg[i][0]]:
+                if (edg_colours[edge_id] == edg_colours[i]) and (edge_id <> i):
+                    stable_colour = False
+            for edge_id in adj_list[edg[i][1]]:
+                if (edg_colours[edge_id] == edg_colours[i])  and (edge_id <> i):
+                    stable_colour = False
+    
+    #done
+    return edg_colours
+        
     
 if __name__ == "__main__":
     width = 1039*4
@@ -72,7 +93,7 @@ if __name__ == "__main__":
                                         [y for x,y in points])
 
     #perform edge colouring
-    edge_colour(edg)
+    edg_colours = edge_colour(edg)
                                         
     #draw the delunay triangulation lines
     for start,end in edg:
