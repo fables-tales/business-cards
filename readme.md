@@ -1,7 +1,7 @@
 #Business card generation scripts
 
 I recently felt the need to have a weird graph like object for the back
-of my business cards. This is the rseult.
+of my business cards. This is the result.
 
 ![Card back](http://samphippen.com/back.png)
 
