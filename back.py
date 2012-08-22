@@ -3,7 +3,7 @@ import random
 import operator
 from collections import defaultdict
 import matplotlib.delaunay as triang
-
+import argparse
 
 def edge_colour(edg):
     '''Returns a valid edge colouring of the given graph in the mathematical sense. No two edges that are connected by a node share the same colour.'''
@@ -75,7 +75,13 @@ if __name__ == "__main__":
     width = 1039*4
     height = 697*4
     arc_radius = 20
-
+    default_colour = (205, 240, 41)
+    
+    #parse command line arguments
+    parser = argparse.ArgumentParser(description='Generate a graph for the back of a business card.')
+    parser.add_argument('--colour-edges', '-c', help='Individually colour the edges', action='store_true')
+    args = parser.parse_args()
+    
     rg = random.randint
     kpadding = height*0.15
     points = [(rg(0, int(width-kpadding)),
@@ -121,12 +127,12 @@ if __name__ == "__main__":
     #compute the delunay triangulation
     cens,edg,tri,neig = triang.delaunay([x for x,y in points],
                                         [y for x,y in points])
-
-    #perform edge colouring
-    edg_colours = edge_colour(edg)
-    
-    #remember the physical colours we've used
-    physical_colours = defaultdict(generate_hipster_colour)
+    if args.colour_edges:
+        #perform edge colouring
+        edg_colours = edge_colour(edg)
+        
+        #remember the physical colours we've used
+        physical_colours = defaultdict(generate_hipster_colour)
                                         
     #draw the delunay triangulation lines
     for i in range(0, len(edg)):
@@ -135,12 +141,15 @@ if __name__ == "__main__":
         y = points[start][1]
         x2 = points[end][0]
         y2 = points[end][1]
-        draw.line((x,y,x2,y2), fill=physical_colours[edg_colours[i]], width=4)
+        if args.colour_edges:
+            draw.line((x,y,x2,y2), fill=physical_colours[edg_colours[i]], width=4)
+        else:
+            draw.line((x,y,x2,y2), fill=default_colour, width=4)
 
     #draw the points
     for x, y in points:
         draw.ellipse((x-arc_radius, y-arc_radius, x+arc_radius, y+arc_radius),
-                     fill=(205, 240, 41))
+                     fill=default_colour)
 
     #apply antialiasing
     im.thumbnail((width/4, height/4), Image.ANTIALIAS)
