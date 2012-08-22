@@ -5,9 +5,14 @@ of my business cards. This is the result.
 
 ![Card back](http://samphippen.com/back.png)
 
-Also in this series to run the script do this:
+##Usage
 
     python back.py
 
-the output will be in `back.png`. For great justice this is licensed under the
-MIT license.
+the output will be in `back.png`.
+
+Running with no arguments will produce a graph as above. Running with the `--colour-edges` (or `-c`) flag will colour the edges randomly. Run with the `-h` flag for help.
+
+##License
+
+For great justice this is licensed under the MIT license.
