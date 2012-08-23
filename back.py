@@ -7,13 +7,13 @@ import argparse
 
 def edge_color(edg):
     '''Returns a valid edge coloring of the given graph in the mathematical sense. No two edges that are connected by a node share the same color.'''
-    
+
     #generate adjacency list
     adj_list = defaultdict(list)
     for i in range(0, len(edg)):
         adj_list[edg[i][0]].append(i)
         adj_list[edg[i][1]].append(i)
-   
+
     #color edges
     edg_colors = [-1]*(len(edg)+1)
     for i in range(0, len(edg)):
@@ -32,25 +32,25 @@ def edge_color(edg):
             for edge_id in adj_list[edg[i][1]]:
                 if (edg_colors[edge_id] == edg_colors[i])  and (edge_id <> i):
                     stable_color = False
-    
+
     #done
     return edg_colors
-        
-    
+
+
 def generate_hipster_color():
     '''Generates a pesudorandom physical color with certian properties.'''
     minimum_value = 41
     maximum_value = 240
     average_value = 162
     nudge_step = 10
-    
+
     #create two innital random values
     alpha = random.randint(minimum_value, maximum_value)
     beta = random.randint(minimum_value, maximum_value)
-    
+
     #try to create thrid value
     gamma = average_value*3-alpha-beta
-    
+
     #too low?
     while gamma < minimum_value:
         #nudge alpha and beta down
@@ -58,7 +58,7 @@ def generate_hipster_color():
         beta -= nudge_step
         #recalculate gamma
         gamma = average_value*3-alpha-beta
-        
+
     #too high?
     while gamma > maximum_value:
         #nudge alpha and beta down
@@ -66,22 +66,22 @@ def generate_hipster_color():
         beta += nudge_step
         #recalculate gamma
         gamma = average_value*3-alpha-beta
-    
+
     #return color
     return (alpha, beta, gamma)
-    
-    
+
+
 if __name__ == "__main__":
     width = 1039*4
     height = 697*4
     arc_radius = 20
     default_color = (205, 240, 41)
-    
+
     #parse command line arguments
     parser = argparse.ArgumentParser(description='Generate a graph for the back of a business card.')
     parser.add_argument('--color-edges', '-c', help='Individually color the edges', action='store_true')
     args = parser.parse_args()
-    
+
     rg = random.randint
     kpadding = height*0.15
     points = [(rg(0, int(width-kpadding)),
@@ -130,10 +130,10 @@ if __name__ == "__main__":
     if args.color_edges:
         #perform edge coloring
         edg_colors = edge_color(edg)
-        
+
         #remember the physical colors we've used
         physical_colors = defaultdict(generate_hipster_color)
-                                        
+
     #draw the delunay triangulation lines
     for i in range(0, len(edg)):
         start,end = edg[i]
