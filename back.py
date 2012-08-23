@@ -5,8 +5,8 @@ from collections import defaultdict
 import matplotlib.delaunay as triang
 import argparse
 
-def edge_colour(edg):
-    '''Returns a valid edge colouring of the given graph in the mathematical sense. No two edges that are connected by a node share the same colour.'''
+def edge_color(edg):
+    '''Returns a valid edge coloring of the given graph in the mathematical sense. No two edges that are connected by a node share the same color.'''
     
     #generate adjacency list
     adj_list = defaultdict(list)
@@ -14,31 +14,31 @@ def edge_colour(edg):
         adj_list[edg[i][0]].append(i)
         adj_list[edg[i][1]].append(i)
    
-    #colour edges
-    edg_colours = [-1]*(len(edg)+1)
+    #color edges
+    edg_colors = [-1]*(len(edg)+1)
     for i in range(0, len(edg)):
         #hack here to work around Python's lack of a do-while loop
-        stable_colour = False
-        #loop until we find a 'stable' colour
-        while not stable_colour:
-            #assume that this pass results in a stable colour
-            stable_colour = True
-            #incirment our colour
-            edg_colours[i] += 1
+        stable_color = False
+        #loop until we find a 'stable' color
+        while not stable_color:
+            #assume that this pass results in a stable color
+            stable_color = True
+            #incirment our color
+            edg_colors[i] += 1
             # check against adjacent edges
             for edge_id in adj_list[edg[i][0]]:
-                if (edg_colours[edge_id] == edg_colours[i]) and (edge_id <> i):
-                    stable_colour = False
+                if (edg_colors[edge_id] == edg_colors[i]) and (edge_id <> i):
+                    stable_color = False
             for edge_id in adj_list[edg[i][1]]:
-                if (edg_colours[edge_id] == edg_colours[i])  and (edge_id <> i):
-                    stable_colour = False
+                if (edg_colors[edge_id] == edg_colors[i])  and (edge_id <> i):
+                    stable_color = False
     
     #done
-    return edg_colours
+    return edg_colors
         
     
-def generate_hipster_colour():
-    '''Generates a pesudorandom physical colour with certian properties.'''
+def generate_hipster_color():
+    '''Generates a pesudorandom physical color with certian properties.'''
     minimum_value = 41
     maximum_value = 240
     average_value = 162
@@ -67,7 +67,7 @@ def generate_hipster_colour():
         #recalculate gamma
         gamma = average_value*3-alpha-beta
     
-    #return colour
+    #return color
     return (alpha, beta, gamma)
     
     
@@ -75,11 +75,11 @@ if __name__ == "__main__":
     width = 1039*4
     height = 697*4
     arc_radius = 20
-    default_colour = (205, 240, 41)
+    default_color = (205, 240, 41)
     
     #parse command line arguments
     parser = argparse.ArgumentParser(description='Generate a graph for the back of a business card.')
-    parser.add_argument('--colour-edges', '-c', help='Individually colour the edges', action='store_true')
+    parser.add_argument('--color-edges', '-c', help='Individually color the edges', action='store_true')
     args = parser.parse_args()
     
     rg = random.randint
@@ -127,12 +127,12 @@ if __name__ == "__main__":
     #compute the delunay triangulation
     cens,edg,tri,neig = triang.delaunay([x for x,y in points],
                                         [y for x,y in points])
-    if args.colour_edges:
-        #perform edge colouring
-        edg_colours = edge_colour(edg)
+    if args.color_edges:
+        #perform edge coloring
+        edg_colors = edge_color(edg)
         
-        #remember the physical colours we've used
-        physical_colours = defaultdict(generate_hipster_colour)
+        #remember the physical colors we've used
+        physical_colors = defaultdict(generate_hipster_color)
                                         
     #draw the delunay triangulation lines
     for i in range(0, len(edg)):
@@ -141,15 +141,15 @@ if __name__ == "__main__":
         y = points[start][1]
         x2 = points[end][0]
         y2 = points[end][1]
-        if args.colour_edges:
-            draw.line((x,y,x2,y2), fill=physical_colours[edg_colours[i]], width=4)
+        if args.color_edges:
+            draw.line((x,y,x2,y2), fill=physical_colors[edg_colors[i]], width=4)
         else:
-            draw.line((x,y,x2,y2), fill=default_colour, width=4)
+            draw.line((x,y,x2,y2), fill=default_color, width=4)
 
     #draw the points
     for x, y in points:
         draw.ellipse((x-arc_radius, y-arc_radius, x+arc_radius, y+arc_radius),
-                     fill=default_colour)
+                     fill=default_color)
 
     #apply antialiasing
     im.thumbnail((width/4, height/4), Image.ANTIALIAS)
