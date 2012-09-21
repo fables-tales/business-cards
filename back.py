@@ -6,7 +6,8 @@ import matplotlib.delaunay as triang
 import argparse
 
 def edge_color(edg):
-    '''Returns a valid edge coloring of the given graph in the mathematical sense. No two edges that are connected by a node share the same color.'''
+    '''Returns a valid edge coloring of the given graph in the mathematical
+    sense. No two edges that are connected by a node share the same color.'''
 
     #generate adjacency list
     adj_list = defaultdict(list)
@@ -78,8 +79,10 @@ if __name__ == "__main__":
     default_color = (205, 240, 41)
 
     #parse command line arguments
-    parser = argparse.ArgumentParser(description='Generate a graph for the back of a business card.')
-    parser.add_argument('--color-edges', '-c', help='Individually color the edges', action='store_true')
+    parser = argparse.ArgumentParser(
+        description='Generate a graph for the back of a business card.')
+    parser.add_argument('--color-edges', '-c',
+        help='Individually color the edges', action='store_true')
     args = parser.parse_args()
 
     rg = random.randint
@@ -142,7 +145,8 @@ if __name__ == "__main__":
         x2 = points[end][0]
         y2 = points[end][1]
         if args.color_edges:
-            draw.line((x,y,x2,y2), fill=physical_colors[edg_colors[i]], width=4)
+            draw.line((x,y,x2,y2), fill=physical_colors[edg_colors[i]], 
+                width=4)
         else:
             draw.line((x,y,x2,y2), fill=default_color, width=4)
 
